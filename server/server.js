@@ -1,7 +1,7 @@
 // imports
 const express = require('express');
 const bodyParser = require('body-parser');
-const calculation = require('./modules/calculationHistory.js')
+const calculationList = require('./modules/calculationHistory.js')
 
 // instance of a server
 
@@ -18,7 +18,22 @@ app.use(bodyParser.urlencoded({extended: true}));
 // onload -> GET -> render
 // POST -> GET -> render
 
-// localhost:5000/ replace
+// localhost:5000/calculations
+app.get('/calculations', (req, res) => {
+    console.log('in GET /calculations');
+    res.send(calculationList);
+});
+
+app.post('/calculations', (req, res) => {
+    // The calculation is here
+    console.log('POST /calculations', req.body);
+
+    // save the calculation
+    calculationList.push(req.body);
+
+    // send back response
+    res.sendStatus(201);
+})
 
 // post from client side
 
