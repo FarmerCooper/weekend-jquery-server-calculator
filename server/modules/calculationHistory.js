@@ -1,3 +1,3 @@
-let calculationHistory = [{nam: 'Diego', lastName: 'Baeza'}];
+let calculationHistory = [];
 
 module.exports = calculationHistory;
