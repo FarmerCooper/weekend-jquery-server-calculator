@@ -35,6 +35,28 @@ app.post('/calculations', (req, res) => {
     res.sendStatus(201);
 })
 
+let result = [];
+let total = 0;
+
+app.get('/results', (req, res) => {
+    console.log('in GET /results');
+
+    res.send(result.slice(-1));
+});
+
+
+app.post('/results', (req, res) => {
+    // The calculation is here
+    console.log('POST /results', req.body);
+
+    // total = result.numOne + result.numTwo;
+
+    result.push(Number(req.body.numTwo) + Number(req.body.numOne));
+
+    // send back response
+    res.sendStatus(201);
+})
+
 // the server will run on...
 app.listen(PORT, function() {
     console.log('SERVER RUNNING ON PORT', PORT);
