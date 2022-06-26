@@ -35,8 +35,6 @@ app.post('/calculations', (req, res) => {
     res.sendStatus(201);
 })
 
-// post from client side
-
 // the server will run on...
 app.listen(PORT, function() {
     console.log('SERVER RUNNING ON PORT', PORT);
