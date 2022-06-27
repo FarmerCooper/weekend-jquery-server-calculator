@@ -8,7 +8,17 @@ function readyWhenever() {
         console.log('button clicked', buttonClicked)
     })
 
+    $('.clear-button').on('click', reset)
+    $('.btn').on('click', addNotation);
     $('.submit-button').on('click', handleSubmitBtn);
+}
+
+let notation;
+
+function addNotation() {
+    let notation = $(this).text();
+
+    return notation;
 }
 
 function handleSubmitBtn() {
@@ -17,8 +27,7 @@ function handleSubmitBtn() {
     const newInput = {
         numOne: $('#numOne').val(),
         numTwo: $('#numTwo').val(),
-        type: $('.addition').val(),
-        tipo: $('.subtraction').val()
+        notation: notation
     }
 
     $.ajax({
@@ -63,7 +72,7 @@ function render(calculationsList) {
 
     // append to the DOM
     for (calculation of calculationsList) {
-        $('#previousCalculations').append(`<div>${calculation.numOne} + ${calculation.numTwo} = <span id = "displayResult"></span></div>`);
+        $('#previousCalculations').append(`<div>${calculation.numOne} ${calculation.notation} ${calculation.numTwo} = <span id = "displayResult"></span></div>`);
     }
 };
 
@@ -71,7 +80,8 @@ function handleCalculations() {
     // collect inputs
     const newInput = {
         numOne: $('#numOne').val(),
-        numTwo: $('#numTwo').val()
+        numTwo: $('#numTwo').val(),
+        notation: notation
     }
 
     $.ajax({
@@ -114,6 +124,8 @@ function renderResult(result) {
 
     $('#result').append(`<div>${result}</div>`);
 
+    $('#displayResult').empty()
+
     if ($('#displayResult').length === 0) {
         console.log('does not exist, yet')
     }
@@ -121,3 +133,7 @@ function renderResult(result) {
         $('#displayResult').append(result)
     }
 };
+
+function reset() {
+    $('input').val('');
+}

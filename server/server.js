@@ -49,7 +49,18 @@ app.post('/results', (req, res) => {
     // The calculation is here
     console.log('POST /results', req.body);
 
-    result.push(Number(req.body.numTwo) + Number(req.body.numOne));
+
+    if(Object.values(req.body).indexOf('+')) {
+        result.push(Number(req.body.numTwo) + Number(req.body.numOne));
+    }else if (Object.values(req.body).indexOf('-')) {
+        result.push(Number(req.body.numTwo) - Number(req.body.numOne));
+    }else if (Object.values(req.body).indexOf('*')) {
+        result.push(Number(req.body.numTwo) * Number(req.body.numOne));
+    }else if (Object.values(req.body).indexOf('/')) {
+        result.push(Number(req.body.numTwo) / Number(req.body.numOne));
+    }else {
+        console.log(error);
+    }
 
     // send back response
     res.sendStatus(201);
