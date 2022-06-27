@@ -49,8 +49,6 @@ app.post('/results', (req, res) => {
     // The calculation is here
     console.log('POST /results', req.body);
 
-    // total = result.numOne + result.numTwo;
-
     result.push(Number(req.body.numTwo) + Number(req.body.numOne));
 
     // send back response

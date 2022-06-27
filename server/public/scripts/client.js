@@ -3,17 +3,22 @@ $(document).ready(readyWhenever);
 function readyWhenever() {
     // console.log('jQuery is ready');
 
+    $('.btn').click(function(event) {
+        let buttonClicked = this.innerHTML;
+        console.log('button clicked', buttonClicked)
+    })
+
     $('.submit-button').on('click', handleSubmitBtn);
 }
 
 function handleSubmitBtn() {
-    // handleCalculations();
-    
     // collect inputs
 
     const newInput = {
         numOne: $('#numOne').val(),
-        numTwo: $('#numTwo').val()
+        numTwo: $('#numTwo').val(),
+        type: $('.addition').val(),
+        tipo: $('.subtraction').val()
     }
 
     $.ajax({
@@ -48,22 +53,22 @@ function appendCalculation() {
         alert('Error in GET /calculations');
     })
     console.log('End of appendCalculation');
+
     handleCalculations();
 };
 
 function render(calculationsList) {
-    // empty?
+    // empty
     $('#previousCalculations').empty();
 
     // append to the DOM
     for (calculation of calculationsList) {
-        $('#previousCalculations').append(`<div>${calculation.numOne} 'calc' ${calculation.numTwo} = <span id = "displayResult"></span></div>`);
+        $('#previousCalculations').append(`<div>${calculation.numOne} + ${calculation.numTwo} = <span id = "displayResult"></span></div>`);
     }
 };
 
 function handleCalculations() {
     // collect inputs
-
     const newInput = {
         numOne: $('#numOne').val(),
         numTwo: $('#numTwo').val()
@@ -116,4 +121,3 @@ function renderResult(result) {
         $('#displayResult').append(result)
     }
 };
-
