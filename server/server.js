@@ -28,40 +28,28 @@ app.post('/calculations', (req, res) => {
     // The calculation is here
     console.log('POST /calculations', req.body);
 
-    // save the calculation
-    calculationList.push(req.body);
-
-    // send back response
-    res.sendStatus(201);
-})
-
-let result = [];
-let total = 0;
-
-app.get('/results', (req, res) => {
-    console.log('in GET /results');
-
-    res.send(result.slice(-1));
-});
-
-
-app.post('/results', (req, res) => {
-    // The calculation is here
-    console.log('POST /results', req.body);
-
-
-    if(Object.values(req.body).indexOf('+')) {
-        result.push(Number(req.body.numTwo) + Number(req.body.numOne));
-    }else if (Object.values(req.body).indexOf('-')) {
-        result.push(Number(req.body.numTwo) - Number(req.body.numOne));
-    }else if (Object.values(req.body).indexOf('*')) {
-        result.push(Number(req.body.numTwo) * Number(req.body.numOne));
-    }else if (Object.values(req.body).indexOf('/')) {
-        result.push(Number(req.body.numTwo) / Number(req.body.numOne));
+    // if the inputs from client contain a certain notation, perform math...
+    if(req.body.notation === '+') {
+        result = (Number(req.body.numOne) + Number(req.body.numTwo));
+    }else if (req.body.notation === '-') {
+        result = (Number(req.body.numOne) - Number(req.body.numTwo));
+    }else if (req.body.notation === '*') {
+        result = (Number(req.body.numOne) * Number(req.body.numTwo));
+    }else if (req.body.notation === '/') {
+        result = (Number(req.body.numOne) / Number(req.body.numTwo));
     }else {
         console.log(error);
     }
 
+    // Send new data, save the data
+    const newCalculation = {
+        numOne: req.body.numOne,
+        numTwo: req.body.numTwo,
+        notation: req.body.notation,
+        result: result
+    }
+
+    calculationList.push(newCalculation);
     // send back response
     res.sendStatus(201);
 })

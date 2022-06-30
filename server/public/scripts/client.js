@@ -1,24 +1,17 @@
 $(document).ready(readyWhenever);
 
+let notation = '';
+
 function readyWhenever() {
     // console.log('jQuery is ready');
-
-    $('.btn').click(function(event) {
-        let buttonClicked = this.innerHTML;
-        console.log('button clicked', buttonClicked)
-    })
-
-    $('.clear-button').on('click', reset)
+    appendCalculation();
     $('.btn').on('click', addNotation);
+    $('.clear-button').on('click', reset)
     $('.submit-button').on('click', handleSubmitBtn);
 }
 
-let notation;
-
 function addNotation() {
-    let notation = $(this).text();
-
-    return notation;
+    notation = $(this).text();
 }
 
 function handleSubmitBtn() {
@@ -53,7 +46,7 @@ function appendCalculation() {
         url: '/calculations',
         method: 'GET'
     }).then(function(response) {
-        console.log(response)
+        console.log('GET /calculations sent:', response)
 
         // Render result to the DOM
         render(response);
@@ -62,76 +55,26 @@ function appendCalculation() {
         alert('Error in GET /calculations');
     })
     console.log('End of appendCalculation');
-
-    handleCalculations();
 };
 
 function render(calculationsList) {
+    if (calculationsList.length === 0) {
+        console.log('No calculation to perform, yet')
+    } else {
+    lastResult = calculationsList[calculationsList.length-1]
+    $('#result').text(`${lastResult.result}`)
+    
     // empty
     $('#previousCalculations').empty();
 
     // append to the DOM
     for (calculation of calculationsList) {
-        $('#previousCalculations').append(`<div>${calculation.numOne} ${calculation.notation} ${calculation.numTwo} = <span id = "displayResult"></span></div>`);
+        $('#previousCalculations').append(`
+        <div>${calculation.numOne} ${calculation.notation} ${calculation.numTwo} = 
+        ${calculation.result}</div>
+        `);
     }
-};
-
-function handleCalculations() {
-    // collect inputs
-    const newInput = {
-        numOne: $('#numOne').val(),
-        numTwo: $('#numTwo').val(),
-        notation: notation
-    }
-
-    $.ajax({
-        url: '/results',
-        method: 'POST',
-        data: newInput // data here becomes req.body on the server
-    }).then(function(response) {
-        console.log(response);
-
-        //trigger a get
-        getResult();
-    }).catch(function(error) {
-        console.log(error);
-        alert('Error in POST /results');
-    })
-};
-
-function getResult() {
-    console.log('Start of getResult');
-
-    // Get the result from the server
-    $.ajax({
-        url: '/results',
-        method: 'GET'
-    }).then(function(response) {
-        console.log(response)
-
-        // Render result to the DOM
-        renderResult(response);
-    }).catch(function(error) {
-        console.log(error);
-        alert('Error in GET /results');
-    })
-    console.log('End of getResult');
-};
-
-function renderResult(result) {
-    $('#result').empty();
-    // append to the DOM
-
-    $('#result').append(`<div>${result}</div>`);
-
-    $('#displayResult').empty()
-
-    if ($('#displayResult').length === 0) {
-        console.log('does not exist, yet')
-    }
-    else {
-        $('#displayResult').append(result)
-    }
+}
 };
 
 function reset() {
